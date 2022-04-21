@@ -1,6 +1,6 @@
 {
   "name": "egg-proxy-npm",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "npm 资源代理",
   "eggPlugin": {
     "name": "proxyNpm"
