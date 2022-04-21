@@ -4,8 +4,6 @@ const path = require('path');
 
 module.exports = appInfo => {
   const exports = {};
-  console.error('=====config---');
-
   /**
    *  npm 资源代理
    *
