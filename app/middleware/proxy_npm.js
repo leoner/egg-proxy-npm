@@ -22,27 +22,23 @@ async function loadFile(fileName) {
 module.exports = (options, app) => {
   const { baseDir, cacheControl } = app.config.npmProxy;
   return async function proxyNpm(ctx, next) {
-    // 检查请求的是否是 umi 的静态资源
     if (ctx.method !== 'HEAD' && ctx.method !== 'GET') return await next();
 
     let url = ctx.url;
     if (url.indexOf('/npm') === 0) {
-      // 先取出头部的 npm
+      // 先去除头部的 npm
       url = url.replace(/^\/npm\//, '');
-      // '@ant-design/pro-table@2.71.7/es/Table.js'; 分割出来包名和版本号 [ '@ant-design/pro-table@2.71.', '7', '/es/Table.js' ]
-      // js 不支持逆序环视
-      const parts = url.split(/(\d)(?=\/)/);
-      // 剔除前面多余的2部分
-      const packageName = `${parts[0]}${parts[1]}`;
-      const [ name, version ] = packageName.split(/@(?=\d)/);
-      // 1. 查找 node_modules 下的包
-      const packageJsonPath = path.join(baseDir, name, 'package.json');
+      // '@ant-design/pro-table@2.71.7/es/Table.js'; 分割出来包名和版本 [ '@ant-design/pro-table', '2.71.7', '/es/Table.js' ]
+      const [ packageName, version, filePath ] = url.split(/@(\d[^\/]+)/);
+      const packageJsonPath = path.join(baseDir, packageName, 'package.json');
       try {
         const packageJson = JSON.parse(await fs.readFile(packageJsonPath, 'utf8'));
+        // 1. 检查版本
         if (packageJson.version !== version) {
           ctx.logger.warn(`[NpmProxy] dependency module ${packageName} version inconsistency, real version ${packageJson.version}`);
         }
-        const file = await loadFile(path.join(baseDir, name, parts[2]));
+        // 2. 获取文件
+        const file = await loadFile(path.join(baseDir, packageName, filePath));
         ctx.status = 200;
         ctx.set('content-type', file.type);
         ctx.set('content-length', file.length);
