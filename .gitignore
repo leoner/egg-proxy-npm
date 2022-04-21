@@ -1,0 +1,16 @@
+logs/
+npm-debug.log
+coverage/
+.idea/
+run/
+.DS_Store
+*.swp
+package-lock.json
+.github
+logs
+run
+test/fixtures/aps/egg-proxy-npm-test/logs
+test/fixtures/aps/egg-proxy-npm-test/run
+add
+node_modules
+node_modules

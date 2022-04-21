@@ -1,0 +1,8 @@
+{
+  "name": "egg-proxy-npm-test",
+  "version": "0.0.1",
+  "dependencies": {
+    "@ant-design/pro-table": "^2.71.7",
+    "antd": "^4.19.5"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "name": "egg-proxy-npm",
+  "version": "1.0.0",
+  "description": "npm 资源代理",
+  "eggPlugin": {
+    "name": "proxyNpm"
+  },
+  "keywords": [
+    "egg",
+    "eggPlugin",
+    "egg-plugin",
+    "npm",
+    "unpkg"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "antd": "^4.19.5",
+    "autod": "^3.0.1",
+    "autod-egg": "^1.1.0",
+    "egg": "^2.16.0",
+    "egg-bin": "^4.11.0",
+    "egg-ci": "^1.11.0",
+    "egg-mock": "^3.21.0",
+    "eslint": "^5.13.0",
+    "eslint-config-egg": "^7.1.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "scripts": {
+    "test": "npm run lint -- --fix && egg-bin pkgfiles && npm run test-local",
+    "test-local": "egg-bin test",
+    "cov": "egg-bin cov",
+    "lint": "eslint .",
+    "ci": "egg-bin pkgfiles --check && npm run lint && npm run cov",
+    "pkgfiles": "egg-bin pkgfiles",
+    "autod": "autod"
+  },
+  "files": [
+    "app",
+    "config",
+    "app.js"
+  ],
+  "ci": {
+    "version": "14, 16"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leoner/egg-proxy-npm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/leoner/egg-proxy-npm/issues"
+  },
+  "homepage": "https://github.com/leoner/egg-proxy-npm#readme",
+  "author": "leoner",
+  "license": "MIT"
+}
