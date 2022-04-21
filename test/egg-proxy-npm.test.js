@@ -34,12 +34,59 @@ describe('test/egg-proxy-npm.test.js', () => {
       .expect('cache-control', 'public, max-age=518400000000')
       .expect(200);
     assert(response.header.etag);
+
+    await app.httpRequest()
+      .get('/npm/@ant-design/pro-table@2.11.11/es/Table.js')
+      .expect(/^import/)
+      .expect('Content-Type', 'application/javascript')
+      .expect('cache-control', 'public, max-age=518400000000')
+      .expect(200);
+
+    // 如果版本错误
+    app.expectLog('[NpmProxy] dependency module @ant-design/pro-table version inconsistency', 'logger');
   });
 
-  // 错误的
-  it('should GET /npm/antd/2.71.7/es/Table.js', async () => {
+  it('HEAD /npm/antd@4.19.5/es/button/button.js', async () => {
+    await app.httpRequest()
+      .head('/npm/antd@4.19.5/es/button/button.js')
+      .expect('Content-length', '9734')
+      .expect(undefined) // head 返回的是空
+      .expect(200);
+  });
+
+  it('POST /npm/antd@4.19.5/es/button/button.js', async () => {
+    await app.httpRequest()
+      .post('/npm/antd@4.19.5/es/button/button.js')
+      .expect('Content-length', '22')
+      .expect('<h1>404 Not Found</h1>') // head 返回的是空
+      .expect(404);
+  });
+
+  // 错误场景
+  it('GET /npm/antd/2.71.7/es/Table.js error', async () => {
     await app.httpRequest()
       .get('/npm/antd/2.71.7/es/Table.js')
       .expect(404);
+  });
+
+  // 非 npm 资源跳过
+  it('GET /antd/2.71.7/es/Table.js error', async () => {
+    await app.httpRequest()
+      .get('/antd/2.71.7/es/Table.js')
+      .expect(404);
+  });
+
+  // 非前端资源文件
+  it('GET /npm/antd@4.19.5/es/button/button.bb content-type is stream', async () => {
+    await app.httpRequest()
+      .get('/npm/antd@4.19.5/es/button/button.bb')
+      .expect('Content-Type', 'application/octet-stream')
+      .expect(200);
+  });
+
+  it('GET / 首页', async () => {
+    await app.httpRequest()
+      .get('/')
+      .expect(200);
   });
 });
