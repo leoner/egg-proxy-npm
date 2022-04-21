@@ -7,7 +7,7 @@ const mime = require('mime-types');
 
 async function loadFile(fileName) {
   const extName = path.extname(fileName);
-  const stats = fs.stat(fileName);
+  const stats = await fs.stat(fileName);
   const buffer = await fs.readFile(fileName);
 
   const obj = {};
@@ -22,7 +22,10 @@ async function loadFile(fileName) {
 module.exports = (options, app) => {
   const { baseDir, cacheControl } = app.config.npmProxy;
   return async function proxyNpm(ctx, next) {
-    if (ctx.method !== 'HEAD' && ctx.method !== 'GET') return await next();
+    if (ctx.method !== 'HEAD' && ctx.method !== 'GET') {
+      await next();
+      return;
+    }
 
     let url = ctx.url;
     if (url.indexOf('/npm') === 0) {
@@ -43,12 +46,10 @@ module.exports = (options, app) => {
         ctx.set('content-type', file.type);
         ctx.set('content-length', file.length);
         ctx.set('cache-control', cacheControl);
+        ctx.set('content-md5', file.md5);
+        ctx.set('etag', file.md5);
 
-        if (file.md5) {
-          ctx.set('content-md5', file.md5);
-          ctx.set('etag', file.md5);
-        }
-
+        if (ctx.method === 'HEAD') return;
         ctx.body = file.buffer;
         return;
 
