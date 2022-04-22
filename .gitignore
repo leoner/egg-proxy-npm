@@ -14,3 +14,4 @@ test/fixtures/aps/egg-proxy-npm-test/run
 add
 node_modules
 node_modules
+tmp.js
