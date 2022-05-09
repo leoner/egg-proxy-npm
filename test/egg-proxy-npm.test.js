@@ -57,8 +57,8 @@ describe('test/egg-proxy-npm.test.js', () => {
   it('POST /npm/antd@4.19.5/es/button/button.js', async () => {
     await app.httpRequest()
       .post('/npm/antd@4.19.5/es/button/button.js')
-      .expect('Content-length', '22')
-      .expect('<h1>404 Not Found</h1>') // head 返回的是空
+      .expect('Content-length', '9')
+      .expect('Not Found') // head 返回的是空
       .expect(404);
   });
 
@@ -69,11 +69,11 @@ describe('test/egg-proxy-npm.test.js', () => {
       .expect(404);
   });
 
-  // 非 npm 资源跳过
+  // 非 npm 资源直接重定向内部资源
   it('GET /antd/2.71.7/es/Table.js error', async () => {
     await app.httpRequest()
       .get('/antd/2.71.7/es/Table.js')
-      .expect(404);
+      .expect(302);
   });
 
   // 非前端资源文件

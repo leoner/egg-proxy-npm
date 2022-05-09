@@ -13,9 +13,12 @@
     "unpkg"
   ],
   "dependencies": {
+    "execa": "^6.1.0",
     "mime-types": "^2.1.35"
   },
   "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
     "antd": "^4.19.5",
     "autod": "^3.1.2",
     "autod-egg": "^1.1.0",
@@ -23,8 +26,11 @@
     "egg-bin": "^4.19.0",
     "egg-ci": "^1.19.0",
     "egg-mock": "^4.2.0",
+    "egg-view-assets": "^1.8.0",
     "eslint": "^8.13.0",
-    "eslint-config-egg": "^11.0.1"
+    "eslint-config-egg": "^11.0.1",
+    "typescript": "^4.1.2",
+    "umi": "^4.0.0-rc.15"
   },
   "engines": {
     "node": ">=14.0.0"
