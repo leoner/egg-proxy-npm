@@ -15,6 +15,9 @@ module.exports = appInfo => {
   exports.npmProxy = {
     baseDir: path.join(appInfo.baseDir, 'node_modules'),
     cacheControl: `public, max-age=${6000 * 24 * 60 * 60 * 1000}`,
+    npmServerPort: 8000,
+    disableProxyInternal: false,
+    disableNpm: false,
   };
 
   return exports;

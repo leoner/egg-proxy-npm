@@ -20,10 +20,13 @@ async function loadFile(fileName) {
 }
 
 module.exports = (options, app) => {
-  const { baseDir, cacheControl } = app.config.npmProxy;
+  const { baseDir, cacheControl, disableNpm } = app.config.npmProxy;
   return async function proxyNpm(ctx, next) {
+    if (disableNpm) {
+      return await next();
+    }
+
     if (ctx.method !== 'HEAD' && ctx.method !== 'GET') {
-      await next();
       return;
     }
 
