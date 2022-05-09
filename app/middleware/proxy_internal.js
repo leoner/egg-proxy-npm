@@ -14,7 +14,7 @@ module.exports = () => {
     }
 
     // 只有测试环境和开发环境才启用
-    if (env !== 'unittest' && env !== 'dev') {
+    if (env !== 'unittest' && env !== 'dev' && env !== 'local') {
       await next();
       return;
     }
