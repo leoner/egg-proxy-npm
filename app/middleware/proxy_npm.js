@@ -23,7 +23,8 @@ module.exports = (options, app) => {
   const { baseDir, cacheControl, disableNpm } = app.config.npmProxy;
   return async function proxyNpm(ctx, next) {
     if (disableNpm) {
-      return await next();
+      await next();
+      return;
     }
 
     if (ctx.method !== 'HEAD' && ctx.method !== 'GET') {

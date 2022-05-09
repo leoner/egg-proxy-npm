@@ -9,23 +9,27 @@ module.exports = () => {
     const { npmProxy, env, disableProxyInternal } = ctx.app.config || {};
 
     if (disableProxyInternal) {
-      return await next();
+      await next();
+      return;
     }
 
     // 只有测试环境和开发环境才启用
     if (env !== 'unittest' && env !== 'dev') {
-      return await next();
+      await next();
+      return;
     }
 
     const extName = path.extname(url);
 
     // console.info('====>', url);
     if (url.indexOf('/npm') === 0) {
-      return await next();
+      await next();
+      return;
     }
 
     if (url === '/index.css') {
-      return await next();
+      await next();
+      return;
     }
 
     if (/\.(?:js|css|map|jpg)$/.test(extName)) {
